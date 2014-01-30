@@ -1,0 +1,268 @@
+%
+% This is the LaTeX template file for lecture notes for CS294-8,
+% Computational Biology for Computer Scientists.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass[twoside]{article}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{amsmath}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 6.S085 Statistics for Research Projects
+                        \hfill IAP 2014} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Notes by: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+   {\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications.  They may be distributed
+   outside this class only with the permission of the Instructor.}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{3}{January 23}{Ramesh Sridharan and George Chen}{William Li}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+\section{Linear Regression}
+
+Be sure to visualize! Recall Anscombe's Quartet.
+
+Goal of linear regression: fit a line, $y = \beta_0 + \beta_1 x$ to data
+
+$y$: dependent variable/response variable
+
+$\beta_0$: intercept
+
+$\beta_1$: slope (e.g. spring constant in Hooke's law)
+
+$x$: independent variable/predictor variable
+
+Slope close to 0: little/no relationship between $x$ and $y$
+
+\section{Probabilistic Model}
+
+Observe $(x_1,y_1), (x_2,y_2), ... , (x_n,y_n)$
+
+Assume:
+
+$y_i(x_i) = \beta_0 + \beta_1 x_i + \epsilon_i$
+
+$\epsilon_i$: normally distributed with mean 0, variance $\sigma^2$ ($N(0,\sigma^2)$)
+
+$\beta_0$ and $\beta_1$ are fixed but unknown.
+
+Under this model, there is a ``good'' way of to estimate $\beta_0$, $\beta_1$:
+
+$\min\limits_{\beta_0,\beta_1} \sum\limits_{i=1}^{n} ( y - (\beta_0 + \beta_1 x_i ) )^2$
+
+(This is called least-squares linear regression)
+
+Solution: 
+
+$\hat{\beta}_1 = \frac{\sum\limits_{i=1}^n x_i y_i - \frac{1}{n}(\sum\limits_{i=1}^n x_i)(\sum\limits_{i=1}^n y_i)}{\sum\limits_{i=1}^n x_i^2 - \frac{1}{n}(\sum\limits_{i=1}^n x_i)^2}$
+
+Correlation coefficient: $r = \frac{1}{n-1}\sum\limits_{i=1}^{n}\frac{(x_i - \bar{x})(y_i-\bar{y})}{s_x s_y}$
+
+where $s_x = \sqrt{\frac{1}{n-1} \sum\limits_{i=1}^n(x_i-\bar{x})^2}$
+
+$r^2$ is called the ``coefficient of determination'', $-1 \leq r \leq 1$
+
+Correlation does not imply casuation, e.g. sun cycles was correlated with the number of Republicans in the Senate in the 1980s
+
+\section{Hypothesis Testing}
+
+Warning: Everything here assumes that the above probabilsitic model is true
+
+\subsection{Slope}
+$t_{\beta_1} = \frac{\hat{\beta_1} - \beta_1}{s_{\beta_1}} \sim t_{n-2}$ (t distributed with $n-1$ degrees of freedom
+
+$s_{beta_1} = \frac{\hat{\sigma}}{\sqrt{\sum\limits_{i=1}^n (x_i - \bar{x})^2}}$
+
+$\hat{\sigma}^2 = \sum\limits_{i=1}^n \frac{(\hat{y_i} - y_i)^2)^2}{n-2}$
+
+Let's break down these terms:
+
+${\sqrt{\sum\limits_{i=1}^n (x_i - \bar{x})^2}}$: How close together the $x_i$'s are
+
+Intuition:
+
+When the $x_i$ values are very close together, it's hard to fit a line. This makes $s_{\beta_1}$ large. This makes $t_{\beta_1}$ smaller (closer to 0). For a null hypothesis ($H_0$) of $\beta_1 = 0$, there will be more area outside of $[-t_{\beta_1},t_{\beta_1}]$, which means that your statistical significance will go down. (Your p-value will be higher, or it will be harder to achieve your threshold of statistical significance).
+
+When there is a large error in fit, the term $\hat{\sigma}^2$ will be large. This makes $s_{\beta_1} large$... your statistical significance will go down (following the line of reasoning above).
+
+\subsection{Intercept}
+
+$t_{\beta_0} = \frac{\hat{\beta_0} - \beta_0}{s_{\beta_0}} \sim t_{n-2}$
+
+$s_{\beta_0} = \hat{\sigma} \sqrt{\frac{1}{n} + \frac{\bar{x}^2}{\sum\limits_{i=1}^n (x_i - \bar{x})^2}}$
+
+If the $x_i$'s are close together, then the $s_{\beta_0}$ will be big. Then $t_{beta_0}$ will be small. For a null hypothesis of $\beta_0 = 0$, there will be more area outside of $[-t_{\beta_0},t_{\beta_0}]$, which means that your statistical significance will go down (your p-value will be higher).
+
+Bonferroni correction: divide the p-value threshold by 2 to see if you have significance at p=0.05 (i.e. is p<0.025 for both of them?)
+
+\subsection{Correlation Coefficient}
+
+$t_r = \sqrt{\frac{n-2}{1-r^2}} \sim t_{n-2}$
+
+\subsection{Prediction}
+
+What can we say about a new point generated from same probabilistic model with x-value $x^*$?
+
+$\hat{y}(x^*) = \beta_0 + \hat{\beta}_1 x^*$
+
+$var[\hat{\beta}_0 + \hat{\beta}_1 x^* + \epsilon] = var[\hat{\beta}_0 + \hat{\beta}_1x^*] + var[\epsilon]$
+
+The first term is estimated with $\hat{\sigma}^2[\frac{1}{n} + \frac{(x^*-\bar{x})^2}{\sum(x_i-\bar{x})^2}$ --- this is the variance in the mean estimate of the line at $x^*$
+
+The second term is estimated with $\hat{\sigma}^2$ --- it is variance introduced by extra noise
+
+\subsection{Multiple linear regression}
+$((x_1,x_2,...,x_p),y)...$ --- there are $p$ predictors for each $y$
+
+Probabilistic model:
+
+$y = \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p + \epsilon$
+
+Why not use a very high degree polynomial? It will overfit.
+
+\subsection{Matrix Form}
+
+Solve:
+
+$\min\limits_{\beta} \sum\limits_{i=1}^n (Y_i - X_i\beta))^2$
+
+Solution:
+
+$\hat{\beta} = (X^TX)^{-1}X^TY$
+
+\section{Model Evaluation}
+
+$y_i - \bar{y} = (\hat{y}_i - \bar{y}) + (y_i-\bar{y})$
+
+First term: difference explained by the model
+Second term: difference not explained by the model
+
+Residual: $\hat{y}_i - y_i$: Visualizing this is important
+
+With a bit of algebra:
+
+$\sum\limits_{i=1}^n (y_i-\bar{y})^2 = \sum (\hat{y}_i - \bar{y})^2 + \sum(y_i - \hat{y}_i)^2$
+
+SST = SSM + SSE
+(sum of squares total) = ( sum of squares model) + sum of squares error
+
+(sum of squares model) / (sum of squares total) is exactly $r^2$!
+
+We want SSM/SSE to be large
+
+MSM = SSM / $p-1$
+
+MSE = SSE / $n-p$
+
+For technical reasons, instead look at: MSM/MSE $\sim$ $F_{p-1,n-p}$
+
+%\section*{References}           
+%\beginrefs
+%\bibentry{AGM97}{\sc N.~Alon}, {\sc Z.~Galil} and {\sc O.~Margalit},
+%On the Exponent of the All Pairs Shortest Path Problem,
+%{\it Journal of Computer and System Sciences\/}~{\bf 54} (1997),
+%pp.~255--262.
+
+%\bibentry{F76}{\sc M. L. ~Fredman}, New Bounds on the Complexity of the 
+%Shortest Path Problem, {\it SIAM Journal on Computing\/}~{\bf 5} (1976), 
+%pp.~83-89.
+%\endrefs
+
+
+\end{document}
+
+
+
+
+

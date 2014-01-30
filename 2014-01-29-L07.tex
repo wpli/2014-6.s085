@@ -1,0 +1,228 @@
+%
+% This is the LaTeX template file for lecture notes for CS294-8,
+% Computational Biology for Computer Scientists.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass[twoside]{article}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{amsmath}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 6.S085 Statistics for Research Projects
+                        \hfill IAP 2014} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Notes by: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+   {\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications.  They may be distributed
+   outside this class only with the permission of the Instructor.}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{7}{January 29}{Ramesh Sridharan and George Chen}{William Li}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+\section{Experimental Design}
+
+Simple random sampling (SRS): randomly choose subset of individuals from a population (N people) without replacement
+
+Sample $n$ individuals: any subset of $n$ individuals is equally likely
+
+Blocking/controlling for confounding variables: dealing with Simpson's paradox
+
+Randomization: need this often to get independent samples and to meet assumptions for stat. tests
+
+Replication: good experiments should be reproducible! Replacing experiment should yield similar reuslts
+
+Control/baseline comparison: to measure effect of treatment, need ref to compare against.
+
+\section{Stratified Random Sampling}
+
+Block things out, and do simple random sampling (SRS) in each block
+
+For a stratum: how large of a simple random sampling?
+
+\begin{definition}[Proportional Allocation]
+
+Number of individuals in a stratum matches stratum's relative size in population
+
+\end{definition}
+
+\begin{definition}[Neyman Allocation]
+
+Combines proportional allocation with looking at variances within a strata
+
+Higher variances $\rightarrow$ larger SRS (higher relative size of stratum in population)
+
+\end{definition}
+
+\begin{definition}[Cluster sampling] 
+
+Previous methods require sampling from whole population or every stratum
+
+Idea: partition population into ``natural'' groups (each group well-represents the population)
+
+\end{definition}
+
+Cluster Sampling:
+
+\begin{enumerate}
+\item Randomly sample a few groups
+\item For each chosen group, obtain SRS
+\end{enumerate}
+
+Example: Polling a city
+
+\begin{enumerate}
+\item Divide city into blocks
+\item Randomly choose a few blocks
+\item Within each chosen block, get SRS
+\end{enumerate}
+
+\section{Problem Set Discussion}
+
+$\log{y} = \beta_1 \log{x} + \beta_0 + \epsilon$
+
+$y \propto \exp{beta_0} x^{\beta_1}$
+
+Bat example:
+
+Higher residuals for one group as opposed to another: the model may not be taking into account some factors
+
+\section{Issues (with all Survey Methods)}
+
+\begin{itemize}
+\item Getting a list of everyone in population is often hard
+\item Non-response bias: many do not respond
+\item Question wording matters
+\end{itemize}
+
+\subsection{Alfred Landon and Literary Digest}
+
+57\% of respondents supported Landon over Roosevelt in 1936 (biased sample) 
+
+\section{Placebo Effect}
+
+Person gets a sham/dud treatment that is advertised as effective
+
+Then the person reports feeling better (therapeutic effect)
+
+\section{Paired Test, Repeated Measures}
+
+e.g. before, after
+
+2 or more treatments that each subject receives
+
+Example: Want ot measure the effect of caffeine
+
+1 month no caffeine
+
+1 month coffee
+
+1 month tea
+
+Note: there are temporal effects (fancier mehods for adding wit hthis -- autocorrelation models)
+
+%\begin{definition}              
+%
+%Hello World                     
+%
+%\end{definition}
+
+% This is a comment
+% that I want to continue
+% OK great
+
+
+\end{document}
+
+
+
+
+

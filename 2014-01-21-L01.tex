@@ -1,0 +1,425 @@
+%
+% This is the LaTeX template file for lecture notes for CS294-8,
+% Computational Biology for Computer Scientists.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+% This template is based on the template for Prof. Sinclair's CS 270.
+
+\documentclass[twoside]{article}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{amsmath}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 6.S085 Statistics for Research Projects
+                        \hfill IAP 2014} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Notes by: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+   {\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications.  They may be distributed
+   outside this class only with the permission of the Instructor.}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{1}{January 21}{Ramesh Sridharan and George Chen}{William Li}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+\section{Motivating Examples}
+
+\begin{itemize}
+\item polling probability: extreme statistical anomalies with random polling 
+\item URL: \url{http://www.dailykos.com/story/2010/06/29/880179/-Research-2000-Problems-in-plain-sight)}
+\item iris recognition: probability of match of iris (used to find the subject of famous National Geographic cover)
+\end{itemize}
+
+\section{Introduction: Some Concepts in Statistics}
+
+\subsection{Some Definitions}
+
+Probability: have model/''truth'', want ``what kind of data will this give me?''
+
+Statistics: have data, want to find the underlying model/''truth''
+
+Bayesian: hidden model is random
+
+Frequentist: hidden model is fixed but unknown (``there is some fixed value of the model that exists'')
+
+\textbf{This class focuses on classical frequentist methods.}
+
+\subsection{Types of Data}
+
+Categorical: red/blue, yes/no
+
+Ordinal: anything that can be ordered: disagree/neutral/agree, etc.
+
+Continuous: numerical, any values
+
+Discrete: we will ``lump these in'' with one of the other models (categorical, ordinal, continuous)
+
+\subsection{Random Variables}
+
+Working definition: a quantity that takes on random values
+
+Examples: Height of a randomly chosen student; temperature in January
+
+Probability distributions, i.e. for random variable $x$, $P(x)$
+
+Empirical distribution: based on observed data
+
+Example: Suppose we observe $(1,1,3,4,7,8,8)$; then $p(1) = 2/8$; $p(4) = 1/8$; $p(7) = 2/8$
+
+Expectation: the ``average value'' that a random variable takes, $E[x] = \sum\limits_a a \cdot P(a)$
+
+Expectation is linear, therefore:
+
+$E[ax+by] = aE[x] + bE[y]$
+
+Example: 
+
+\begin{verbatim}
+x   y   x+y
+------------
+1   3   4
+2   4   6
+5   3   8
+4   3   7
+3   4   7
+\end{verbatim}
+
+(all rows are equally likely)
+
+$E[x] = 15/5 = 3$
+
+$E[y] = 17/5 = 3.4$
+
+$E[x+y] = 32/5 = 6.4$
+
+What if we scramble $x$ and $y$ separately?
+
+\begin{verbatim}
+x   y   x+y
+------------
+1   3   4
+2   3   5
+3   3   6
+4   4   8
+5   4   9
+\end{verbatim}
+
+$E[x]$, $E[y]$, $E[x+y]$ are the same
+
+No matter how independent/dependent $x$ and $y$ are, expectation is always linear
+
+\subsection{Variance}
+
+$var[x] = \sum\limits_a p(a) \cdot (a - E[x])^2$
+
+$var[ax] = a^2 var[x]$
+
+$var[x+y] = var[x] + var[y]$ IF $x,y$ are independent
+
+standard deviation: $\sqrt{var[x]}$
+
+\subsection{Notation}
+
+$\mu_x$: mean of r.v. $x$
+
+$\sigma_x$: standard deviation of r.v. $x$
+
+$\sigma_x^2$: variance of r.v. $x$ 
+
+\section{Exploratory Analysis}
+
+\subsection{Visualization}
+When you get some data, you often want to see what's going on by visualizing the data.
+
+Histogram: count frequency of data
+
+\begin{verbatim}
+4
+3    x
+2 x  x     x
+1 x  x  x  x  x
+__________________
+  1  2  3  4  5
+\end{verbatim}
+
+Boxplots: 
+
+\begin{verbatim}
+          median        end of data that falls in outlier threshold   
+|-----[     |      ]--------|   .   .   .
+   quartile  quartile (75%)          outliers
+-----------------------------------------
+             x 
+\end{verbatim}
+
+Cumulative Distribution Function: for random variable $x$, $f(a) = P(x \leq a )$
+
+\begin{itemize}
+\item The CDF is a monotonically increasing function
+\end{itemize}
+
+For a discrete distribution, it might look something like this:
+
+\begin{verbatim}
+4/4|         o----
+3/4|      o--.
+2/4|   o--.
+1/4| ._.
+0/4 o------------
+\end{verbatim}
+
+Scatter Plot: visualizing two random variables
+
+\begin{verbatim}
+  | 
+  |     x           x    x
+y |        x   x   x   x 
+  |          x    x
+  |   x        x 
+  |
+  ____________________________
+               x
+\end{verbatim}
+
+Recommendation: visualize data before jumping into the analysis (you will catch things that you otherwise wouldn't see)
+
+Examples:
+\begin{itemize}
+\item Is your data multimodal? If so, then using the mean to summarize it is not helpful
+\item Skew: long tail to the right (``right skew''); long tail to the left(``left skew'') -- this will pull the mean further in that direction than the median
+\end{itemize}
+
+The median can be more robust to high values
+
+\subsection{Quantitative Measures}
+
+Sample mean: $\hat{\mu}_x = \frac{1}{n} \sum\limits_i x_i$
+
+Sample Variance: $\sigma_x^2 = \frac{1}{n-1} \sum\limits_i (x_i - \hat{\mu}_x)^2$ (note the $n-1$ in denominator)
+
+Median: 50\% of the data is below this value
+
+Mode: most common value
+
+Range: largest - smallest
+
+Is the sample mean a good approximation of the true mean?
+
+\begin{itemize}
+\item $x_i$ are random
+\item They have fixed but unknown mean $\mu_x$
+\item We compute $\hat{\mu}_x$
+\end{itemize}
+
+Insight: $\hat{\mu}_x$ is also a random variable
+
+\begin{align}
+E[\hat{\mu}_x] & = E[\frac{1}{n} \sum x_i] \\
+& = \frac{1}{n} \sum\limits_i \mu_x \\
+& = \mu_x
+\end{align}
+
+Sample variance: why do we have this $n-1$ term?
+
+We underestimate the sample variance because the $(x_i - \hat{\mu}_x)$ term is too small
+
+$E[\hat{\sigma}_x^2] = \sigma_x^2$
+
+Bias: how ``wrong'' a quantity is
+
+\subsection{Anscombe's Quartet}
+
+Consider 4 datasets with $(x,y)$ pairs:
+\begin{itemize}
+\item same mean in $x$ and $y$
+\item same standard deviation in $x$ and $y$
+\item same correlation between $x$ and $y$ 
+\end{itemize}
+
+same mean in $x$, same mean in $y$, same std dev in $x$ and $y$, same correlation -- but four very different datasets!
+
+Question: how many summary statistics do you need to summarize a dataset?
+
+\subsection{Gaussian/Normal Distribution}
+
+$p(x) = a \cdot e^{(x-\mu)^2}$
+
+A Gaussian distribution is very concentrated around its mean
+
+We only need the mean and variance to characterize it
+
+Probability of being within one standard deviation of the mean $\approx$ 68\%
+
+Two SDs: 95\%
+
+Three SDs: 99\%
+
+\subsection{Bernoulli Distribution}
+
+binary random variable:
+
+$Pr(x=0) = 1-p$
+
+$Pr(x=1) = p$ 
+
+If $x$ is Bernoulli: 
+
+$x ~ Ber(p)$
+
+$E[x] = p$
+
+$var[x] = p(1-p)$
+
+\subsection{Binomial Distribution}
+
+sum of $n$ independent and identically distributed (i.i.d.) Bernoulli random variables
+
+parameters: $n$ (number of Bernoulli r.v.'s) and $p$ (probability of 1 in Bernoulli r.v.)
+
+If $b$ is binomial
+
+$b ~ B$ (``$b$ is distributed as $B$'')
+
+$E[b] = E[\sum x_i] = np$
+
+$var[b] = np(1-p)$
+
+\subsection{Chi-squared Distribution}
+
+Represented as $\chi^2$
+
+If $x_1,...x_n$, $x_i ~ N(0,1)$
+
+$y = \sum x_i^2$, $y ~ \chi^2 (n)$ 
+
+parameters: $n$ (degrees of freedom)
+
+\subsection{Standard Normal}
+
+$x ~ N(\mu, \sigma^2)$
+
+$y = \frac{x-\mu}{\sigma}$
+
+$y = N(0,1)$
+
+\section{Endnote: 2004 Election}
+
+Bush won all 15 poorest states but only won 36\% of the ``poor vote''
+
+Kerry won 9 out of 11 of the richest states but only won 38\% of the ``rich vote''
+
+There is a confounding factor: rate at which
+
+weak dependence on income in Connecticut, a rich state
+
+strong dependence on income in Mississippi, a poor state
+
+Simpson's paradox
+
+%\section*{References}           
+%\beginrefs
+%\bibentry{AGM97}{\sc N.~Alon}, {\sc Z.~Galil} and {\sc O.~Margalit},
+%On the Exponent of the All Pairs Shortest Path Problem,
+%{\it Journal of Computer and System Sciences\/}~{\bf 54} (1997),
+%pp.~255--262.
+
+%\bibentry{F76}{\sc M. L. ~Fredman}, New Bounds on the Complexity of the 
+%Shortest Path Problem, {\it SIAM Journal on Computing\/}~{\bf 5} (1976), 
+%pp.~83-89.
+%\endrefs
+
+
+\end{document}
+
+
+
+
+

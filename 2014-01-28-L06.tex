@@ -1,0 +1,376 @@
+%
+% This is the LaTeX template file for lecture notes for CS294-8,
+% Computational Biology for Computer Scientists.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass[twoside]{article}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{amsmath}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 6.S085 Statistics for Research Projects
+                        \hfill IAP 2014} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Notes by: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+   {\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications.  They may be distributed
+   outside this class only with the permission of the Instructor.}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{6}{January 28}{Ramesh Sridharan and George Chen}{William Li}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+
+\section{Categorical Data}
+
+
+\begin{verbatim}
+              Outcome
+                1      2   
+Treatment   1   A      B
+            2   C      C (table of counts)
+\end{verbatim}
+
+
+Start with inputs and outputs that are categorical
+
+Usually look at two-way table (contingency table)
+
+Risk: of an outcome for a treatment is proportional of data with tha outcome
+
+``risk fo outcome 1 (cancer) for treatment 1 (smoking) is $A/(A+B)$''
+
+Relative risk: $\frac{A/(A+B)}{C/(C+D)}$
+
+Odds ratio: $\frac{A/B}{C/D}$
+
+\section{Simpson's Paradox}
+
+Data from two hospitals on a risky procedure
+
+\begin{verbatim}
+              Live   Die   Survival Rate
+Hospital   A   80    120      40% 
+           B   20     80      20%
+\end{verbatim}
+
+Hospital B sees more patients than A
+\begin{verbatim}
+
+GOOD PATIENTS
+
+              Live   Die   Survival Rate
+Hospital   A   80    100      44% 
+           B   10     10      50%
+
+
+BAD PATIENTS
+              Live   Die   Survival Rate
+Hospital   A    0     20       0% 
+           B   10     70      13%
+\end{verbatim}
+
+Simpson's paradox
+
+Caused by confounding variable at play
+
+\section{Testing Significance of Categorical Data}
+
+We gathered data and avoided confounds. 
+
+Question: 
+
+Is there a relationship between input and output?
+
+Are they not independent?
+
+Null hypothesis: treatment and outcome are independent
+
+Test: 
+
+$\chi^2 = \sum\limits_{entries} \frac{(\text{observed} - \text{expected})^2}{observed}$
+
+Note: in above example, ``hospital'' is the treatment and live/die is the outcome
+
+Expected counts for hospitals:
+
+\begin{verbatim}
+A: 2/3
+B: 1/3
+L: 1/3
+D: 2/3
+
+Expected:
+     L             D
+-------------------------
+A   300*A*L     300*A*D
+
+B   300*B*L     300*B*D
+
+     L             D
+-------------------------
+A    67           133
+
+B    33            67
+\end{verbatim}
+
+This is how you compute expected counts for independence
+
+Now, we can go back to the $\chi^2$ formula
+
+For hospital example, $\chi^2 = 12$
+
+This test statistic ($\chi^2$) has a $chi^2$ distribution with $(r-1)(c-1)$ degrees of freedom
+
+We can look it up and see that the p-value is 0.0053; we can reject the null hypothesis that the treatments (hospitals) are independent from the outcome
+
+\subsection{Why is it $\chi^2$}
+
+Each entry is binomial
+
+If the entries are large enough and the samples are indepnedent, each entry is approximately normal
+
+AND the sum of squared standard Gaussians is $\chi^2$
+
+Key assumptions: ``entries are large enough'' and ``samples are independent''
+
+\subsection{What if the entries are too small?}
+
+Fisher's exact test: Works for 2x2 tables
+
+Permutation test
+
+Fisher p-value: $p = \frac{\binom{A+B}{A}\binom{C+D}{C}}{\binom{N}{A+C}}$
+
+Easy if entries are small
+
+Monto Carlo approximation
+
+Yates correction: substract .5 (makes approximation more accurate)
+
+Recall: 
+
+$\binom{n}{k} = \frac{n!}{k!(n-k)!}$
+
+\section{Categorical Inputs, Numerical Outputs}
+
+\subsection{Vocabulary}
+
+Factor: categorical varaible (e.g. color)
+
+Level: value that the factor takes (e.g. ``red'')
+
+\subsection{ANOVA}
+
+Start with one factor, $k$ levels
+
+e.g. input data is color: red/blue/yellow
+
+\begin{verbatim}
+Data
+
+MM color    taste score
+R           8.1
+R           8.0
+B           2.1
+Y           0.0
+B           1.9
+\end{verbatim}
+
+Recall, in linear regression:
+
+$y = X\beta + \epsilon$
+
+Now, let's have one predictor per level 
+
+$R = ( 1, 0, 0 )$
+
+$B = ( 0, 1, 0 )$
+
+$Y = ( 0, 0, 1 )$
+
+\[ X = \left( 
+\begin{array}{ccc}
+1 & 0 & 0 \\
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & 0  \end{array}
+\right) \]
+
+\[ y = \left( 
+\begin{array}{c}
+8.1 \\
+8.0 \\
+2.1 \\
+0 \\
+1.9  \end{array}
+\right) \]
+
+
+fit linear regression with $X, y$ to get $\beta$
+
+\[ \beta = \left( 
+\begin{array}{c}
+8.05 \\
+2.0 \\
+0   \end{array}
+\right) \]
+
+Idea: use F-test (``how good is the model?'')
+
+$SS_{total} = SS_{model} + SS_{error}$ 
+
+F-test: how well does the model explain $\rightarrow$ ANOVA!
+
+Is there a relationship between the input and the output?
+
+The question you are asking: Do the categories predict the outcomes? (Not the difference in the categories)
+
+Null hypothesis: $\beta_1 = \beta_2 = ... = 0$
+
+\subsection{What assumptions are we making?}
+
+\begin{itemize}
+\item errors independent $\rightarrow$ data must be independent
+\item errors must be normally distributed $\rightarrow$ data in each group must be normally distributed
+\item All errors have the same variance $rightarrow$ all groups (categories) have the same variance (homoskedasticity)
+\end{itemize}
+
+$\hat{\epsilon} = y - \hat{y}$ (residual)
+
+$\epsilon$ (error)
+
+\subsection{Two-Way ANOVA}
+
+Two input factors
+
+Additive (no interaction)
+
+\[ X = \left( 
+\begin{array}{cccccc}
+R & B & Y & sq & tr & st \\
+1 & 0 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 & 0 & 1 \\
+0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 1 \\
+0 & 1 & 0 & 0 & 0 & 1 \end{array}
+\right) \]
+
+One predictor per shape plus one per color
+
+Make sure counts for each level pair are high enough
+
+$y = \beta_0 + x_1\beta_1 + x_2\beta_2 + x_3\beta_3 + x_4\beta_4 + x_5\beta|5 + x_6\beta_6$
+
+\section{Analysis of Covariance (ANCOVA)}
+
+Add ``covariates''
+
+Adding ``continuous factors''
+
+Add one more predictor (per covariate)
+
+\[ X = \left( 
+\begin{array}{ccccc}
+C & 1 & 2 & 3 & age \\
+1 & 0 & 0 & 1 & 23 \\
+0 & 1 & 0 & 0 & 33 \end{array}
+\right) \]
+
+
+\end{document}
+
+
+
+
+
